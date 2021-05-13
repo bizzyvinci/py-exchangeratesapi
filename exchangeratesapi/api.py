@@ -152,7 +152,7 @@ class Api(object):
         params = self.START_PARAM
         url = self.API_URL.format(endpoint=endpoint, params=params)
         res = self._get_url(url)
-        return tuple(res['symbols'].keys())
+        return tuple(sorted(res['symbols'].keys()))
 
     def get_rates(self, base=None, target_list=[],
                   start_date=None, end_date=None):
