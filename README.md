@@ -13,7 +13,23 @@ First, you need to register at [ExchangeRatesAPI](https://exchangeratesapi.io/pr
 from exchangeratesapi import Api
 
 api = Api(ACCESS_KEY)
+```
 
+Alternatively, you could add your `ACCESS_KEY` to environment variables as `EXCHANGERATESAPI_KEY`. This would be the default `ACCESS_KEY`.
+
+```py
+api = Api()
+```
+
+## Methods
+```py
+api.get_rate()
+api.get_rates()
+
+```
+
+## Examples
+```py
 # Get the latest foreign exchange rates:
 api.get_rates()
 
@@ -124,14 +140,35 @@ False
 
 #  Supported currencies list:
 print(api.supported_currencies)
-['CAD', 'HKD', 'ISK', 'PHP', 'DKK', 'HUF', 'CZK', 'AUD', 'RON', 'SEK', 'IDR', 'INR', 'BRL',
-'RUB', 'HRK', 'JPY', 'THB', 'CHF', 'SGD', 'PLN', 'BGN', 'TRY', 'CNY', 'NOK', 'NZD', 'ZAR',
-'USD', 'MXN', 'ILS', 'GBP', 'KRW', 'MYR']
+('AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG',
+'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND',
+'BOB', 'BRL', 'BSD', 'BTC', 'BTN', 'BWP', 'BYN', 'BYR', 'BZD',
+'CAD', 'CDF', 'CHF', 'CLF', 'CLP', 'CNY', 'COP', 'CRC', 'CUC',
+'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ERN',
+'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GGP', 'GHS', 'GIP',
+'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF',
+'IDR', 'ILS', 'IMP', 'INR', 'IQD', 'IRR', 'ISK', 'JEP', 'JMD',
+'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD',
+'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL',
+'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO',
+'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO',
+'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR',
+'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD',
+'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'STD',
+'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY',
+'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'UYU', 'UZS', 'VEF',
+'VND', 'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XCD', 'XDR', 'XOF',
+'XPF', 'YER', 'ZAR', 'ZMK', 'ZMW', 'ZWL')
+```
+
+## New Features
+```py
+
 ```
 
 # Supported currencies
 The list of currencies can be found at [European Central Bank's data set](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html).
 
-If your currency is not in the list, then the library will be of no use to you. You may try [openexchangerates.org API](https://github.com/metglobal/openexchangerates) or some other service.
+If your currency is not in the list, then the library will be of no use to you. You may try openexchangerates.org API for [python2](https://github.com/metglobal/openexchangerates) or [python3](https://github.com/lihan/openexchangerates3) or some other service.
 # License
 MIT
