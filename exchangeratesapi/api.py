@@ -43,7 +43,19 @@ class Api(object):
             raise ExchangeRatesApiException(message)
         self.api_key = api_key
         self.START_PARAM = '?{}={}'.format(self.params['key'], self.api_key)
-        self.supported_currencies = self._get_symbols()
+        try:
+            self.supported_currencies = self._get_symbols()
+        except Exception as e:
+            #{"code": "https_access_restricted",
+            # "message": ("Access Restricted - Your current "
+            #       "Subscription Plan does not support "
+            #       "HTTPS Encryption.")
+            #}
+            if 'Plan does not support HTTPS Encryption' in str(e):
+                self.API_TIER = 0
+                self.API_URL = ('http://api.exchangeratesapi.io/v1/'
+                                '{endpoint}{params}')
+                self.supported_currencies = self._get_symbols()
 
     def _get_api_url(self, base, target_list, start_date, end_date):
         """Method to constuct api request url.
