@@ -1,10 +1,23 @@
-# python-exchangeratesapi
-This is an unofficial wrapper for the awesome, partly free [ExchangeRatesAPI](https://exchangeratesapi.io/), which provides exchange rate lookups courtesy of the European Central Bank.
+# py-exchangeratesapi
+This is an unofficial wrapper for [ExchangeRatesAPI](https://exchangeratesapi.io/), which provides exchange rate lookups.
 
 # Installation
 Either clone this repository into your project, or install with `pip`:
+#### Method 1
+```bash
+pip install py-exchangeratesapi
 ```
-pip install python-exchangeratesapi
+
+#### Method 2
+```bash
+pip install git+https://github.com/bizzyvinci/py-exchangeratesapi.git
+```
+
+#### Method 3
+```bash
+git clone https://github.com/bizzyvinci/py-exchangeratesapi.git
+cd py-exchangeratesapi
+python setup.py install
 ```
 
 # Usage
@@ -29,6 +42,7 @@ api = Api()
 | api.convert()					| Convert an amount from a base to a target symbol	|
 | api.fluctuation()				| Get currency's change parameters (margin and percentage)	|
 | api.is_currency_supported()	| Check if a symbol is supported currency	|
+| api.supported_currencies		| tuple of all supported currencies		|
 
 
 ## Examples
@@ -210,7 +224,7 @@ api.fluctuation(target='NGN')
 ```
 
 # Supported currencies
-The list of currencies can be found at [European Central Bank's data set](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html).
+The list of currencies can be found at api.supported_currencies.
 
 If your currency is not in the list, then the library will be of no use to you. You may try openexchangerates.org API for [python2](https://github.com/metglobal/openexchangerates) or [python3](https://github.com/lihan/openexchangerates3) or some other service.
 
