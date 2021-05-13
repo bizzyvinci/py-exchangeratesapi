@@ -9,7 +9,7 @@ class ExchangeRatesApiException(Exception):
 
 
 class Api(object):
-    API_KEY = os.getenv('EXCHANGERATESAPI_KEY')
+    """ExchangeRatesApi Client."""
     API_TIER = 1
     API_URL = 'https://api.exchangeratesapi.io/v1/{endpoint}{params}'
     endpoints = {
@@ -35,15 +35,28 @@ class Api(object):
     MIN_YEAR = 1999
     supported_currencies = None
 
-    def __init__(self, api_key=API_KEY):
-        """Populate supported currencies list."""
-        if not api_key:
+    def __init__(self, api_key=None):
+        """Instantiates API."""
+        self.api_key = api_key if api_key is not None\
+                       else os.getenv('EXCHANGERATESAPI_KEY')
+        if self.api_key is None:
             message = ('exchangeratesapi KEY is missing. '
                        'Go to https://manage.exchangeratesapi.io/dashboard')
             raise ExchangeRatesApiException(message)
-        self.api_key = api_key
         self.START_PARAM = '?{}={}'.format(self.params['key'], self.api_key)
-        self.supported_currencies = self._get_symbols()
+        try:
+            self.supported_currencies = self._get_symbols()
+        except Exception as e:
+            #{"code": "https_access_restricted",
+            # "message": ("Access Restricted - Your current "
+            #       "Subscription Plan does not support "
+            #       "HTTPS Encryption.")
+            #}
+            if 'Plan does not support HTTPS Encryption' in str(e):
+                self.API_TIER = 0
+                self.API_URL = ('http://api.exchangeratesapi.io/v1/'
+                                '{endpoint}{params}')
+                self.supported_currencies = self._get_symbols()
 
     def _get_api_url(self, base, target_list, start_date, end_date):
         """Method to constuct api request url.
@@ -233,7 +246,8 @@ class Api(object):
         else:
             return amount * self.get_rate(base, target, date)
 
-    def fluctuation(self, base, target, start_date=None, end_date=None):
+    def fluctuation(self, base='EUR', target=None, start_date=None,
+                    end_date=None):
         """Method to get currency's change parameters (margin and percentage),
         optionally between two specified dates.
 
@@ -247,11 +261,13 @@ class Api(object):
         Returns:
             (dict): fluctuation
         """
-        target_list = target if type(target)==list else [target]
         endpoint = self.endpoints['fluctuation']
         params = self.START_PARAM
-        params += '&{}={}&{}={}'.format(self.params['base'], base,
-                  self.params['symbols'], ','.join(target_list))
+        params += '&{}={}'.format(self.params['base'], base)
+        if target:
+            target_list = target if type(target)==list else [target]
+            params += '&{}={}'.format(self.params['symbols'],
+                                      ','.join(target_list))
         if start_date:
             if end_date:
                 params += '&{}={}&{}={}'.format(self.params['start'],

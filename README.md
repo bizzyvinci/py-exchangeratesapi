@@ -1,10 +1,23 @@
-# python-exchangeratesapi
-This is an unofficial wrapper for the awesome, partly free [ExchangeRatesAPI](https://exchangeratesapi.io/), which provides exchange rate lookups courtesy of the European Central Bank.
+# py-exchangeratesapi
+This is an unofficial wrapper for [ExchangeRatesAPI](https://exchangeratesapi.io/), which provides exchange rate lookups.
 
 # Installation
 Either clone this repository into your project, or install with `pip`:
+#### Method 1
+```bash
+pip install py-exchangeratesapi
 ```
-pip install python-exchangeratesapi
+
+#### Method 2
+```bash
+pip install git+https://github.com/bizzyvinci/py-exchangeratesapi.git
+```
+
+#### Method 3
+```bash
+git clone https://github.com/bizzyvinci/py-exchangeratesapi.git
+cd py-exchangeratesapi
+python setup.py install
 ```
 
 # Usage
@@ -13,7 +26,27 @@ First, you need to register at [ExchangeRatesAPI](https://exchangeratesapi.io/pr
 from exchangeratesapi import Api
 
 api = Api(ACCESS_KEY)
+```
 
+Alternatively, you could add your `ACCESS_KEY` to environment variables as `EXCHANGERATESAPI_KEY`. This would be the default `ACCESS_KEY`.
+
+```py
+api = Api()
+```
+
+## Methods
+| Methods 						| Task				|
+| ----------------------------- | ----------------- |
+| api.get_rate()				| Get latest or historical rate against a target |
+| api.get_rates()				| Get latest or historical rate against multiple targets	|
+| api.convert()					| Convert an amount from a base to a target symbol	|
+| api.fluctuation()				| Get currency's change parameters (margin and percentage)	|
+| api.is_currency_supported()	| Check if a symbol is supported currency	|
+| api.supported_currencies		| tuple of all supported currencies		|
+
+
+## Examples
+```py
 # Get the latest foreign exchange rates:
 api.get_rates()
 
@@ -124,14 +157,76 @@ False
 
 #  Supported currencies list:
 print(api.supported_currencies)
-['CAD', 'HKD', 'ISK', 'PHP', 'DKK', 'HUF', 'CZK', 'AUD', 'RON', 'SEK', 'IDR', 'INR', 'BRL',
-'RUB', 'HRK', 'JPY', 'THB', 'CHF', 'SGD', 'PLN', 'BGN', 'TRY', 'CNY', 'NOK', 'NZD', 'ZAR',
-'USD', 'MXN', 'ILS', 'GBP', 'KRW', 'MYR']
+('AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG',
+'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND',
+'BOB', 'BRL', 'BSD', 'BTC', 'BTN', 'BWP', 'BYN', 'BYR', 'BZD',
+'CAD', 'CDF', 'CHF', 'CLF', 'CLP', 'CNY', 'COP', 'CRC', 'CUC',
+'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ERN',
+'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GGP', 'GHS', 'GIP',
+'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF',
+'IDR', 'ILS', 'IMP', 'INR', 'IQD', 'IRR', 'ISK', 'JEP', 'JMD',
+'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD',
+'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL',
+'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO',
+'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO',
+'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR',
+'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD',
+'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'STD',
+'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY',
+'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'UYU', 'UZS', 'VEF',
+'VND', 'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XCD', 'XDR', 'XOF',
+'XPF', 'YER', 'ZAR', 'ZMK', 'ZMW', 'ZWL')
+```
+
+## New Features in V1
+```py
+# Convert 10 USD to EUR based on latest rate
+print(api.convert(10, 'USD', 'EUR'))
+8.27795
+
+# Convert 100 GBP to EUR on 2021-01-01 rate
+api.convert(100, 'GBP', 'EUR', '2021-01-01')
+112.2969
+
+# Get fluctuation of EUR from yesterday today
+api.fluctuation()
+{
+	"AED": {
+		"start_rate": 4.436637,
+		"end_rate": 4.437618,
+		"change": 0.001,
+		"change_pct": 0.0221
+	},
+	"AFN": {
+		"start_rate": 93.426038,
+		"end_rate": 93.452022,
+		"change": 0.026,
+		"change_pct": 0.0278
+	},
+...
+}
+
+# Get fluctuation within a specified date
+api.fluctuation(start_date='2020-01-01', end_date='2021-01-01')
+
+# Get fluctuation for a USD
+api.fluctuation('USD')
+
+# Limit response to some targets
+api.fluctuation('USD', target=['EUR', 'GBP'])
+{
+	'EUR': {'start_rate': 0.827925, 'end_rate': 0.8279, 'change': 0, 'change_pct': -0.003},
+	'GBP': {'start_rate': 0.711065, 'end_rate': 0.71155, 'change': 0.0005, 'change_pct': 0.0682}}
+
+# Get for just a target
+api.fluctuation(target='NGN')
+{'start_rate': 493.595526, 'end_rate': 493.585805, 'change': -0.0097, 'change_pct': -0.002}
 ```
 
 # Supported currencies
-The list of currencies can be found at [European Central Bank's data set](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html).
+The list of currencies can be found at api.supported_currencies.
 
-If your currency is not in the list, then the library will be of no use to you. You may try [openexchangerates.org API](https://github.com/metglobal/openexchangerates) or some other service.
+If your currency is not in the list, then the library will be of no use to you. You may try openexchangerates.org API for [python2](https://github.com/metglobal/openexchangerates) or [python3](https://github.com/lihan/openexchangerates3) or some other service.
+
 # License
 MIT
