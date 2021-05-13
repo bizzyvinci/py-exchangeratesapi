@@ -9,7 +9,7 @@ class ExchangeRatesApiException(Exception):
 
 
 class Api(object):
-    API_KEY = os.getenv('EXCHANGERATESAPI_KEY')
+    """ExchangeRatesApi Client."""
     API_TIER = 1
     API_URL = 'https://api.exchangeratesapi.io/v1/{endpoint}{params}'
     endpoints = {
@@ -35,13 +35,14 @@ class Api(object):
     MIN_YEAR = 1999
     supported_currencies = None
 
-    def __init__(self, api_key=API_KEY):
-        """Populate supported currencies list."""
-        if not api_key:
+    def __init__(self, api_key=None):
+        """Instantiates API."""
+        self.api_key = api_key if api_key is not None\
+                       else os.getenv('EXCHANGERATESAPI_KEY')
+        if self.api_key is None:
             message = ('exchangeratesapi KEY is missing. '
                        'Go to https://manage.exchangeratesapi.io/dashboard')
             raise ExchangeRatesApiException(message)
-        self.api_key = api_key
         self.START_PARAM = '?{}={}'.format(self.params['key'], self.api_key)
         try:
             self.supported_currencies = self._get_symbols()
