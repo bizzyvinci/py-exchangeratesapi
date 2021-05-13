@@ -246,7 +246,8 @@ class Api(object):
         else:
             return amount * self.get_rate(base, target, date)
 
-    def fluctuation(self, base, target, start_date=None, end_date=None):
+    def fluctuation(self, base='EUR', target=None, start_date=None,
+                    end_date=None):
         """Method to get currency's change parameters (margin and percentage),
         optionally between two specified dates.
 
@@ -260,11 +261,13 @@ class Api(object):
         Returns:
             (dict): fluctuation
         """
-        target_list = target if type(target)==list else [target]
         endpoint = self.endpoints['fluctuation']
         params = self.START_PARAM
-        params += '&{}={}&{}={}'.format(self.params['base'], base,
-                  self.params['symbols'], ','.join(target_list))
+        params += '&{}={}'.format(self.params['base'], base)
+        if target:
+            target_list = target if type(target)==list else [target]
+            params += '&{}={}'.format(self.params['symbols'],
+                                      ','.join(target_list))
         if start_date:
             if end_date:
                 params += '&{}={}&{}={}'.format(self.params['start'],
