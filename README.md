@@ -23,7 +23,7 @@ python setup.py install
 # Usage
 First, you need to register at [ExchangeRatesAPI](https://exchangeratesapi.io/pricing/) for `ACCESS_KEY`.
 ```py
-from exchangeratesapi import Api
+from py_exchangeratesapi import Api
 
 api = Api(ACCESS_KEY)
 ```

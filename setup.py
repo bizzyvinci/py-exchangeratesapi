@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="py-exchangeratesapi",
-    version="1.0.0",
+    version="1.0.1",
     author="Dastan Abdrakhmanov",
     author_email="dastand.climber@gmail.com",
     maintainer="Bisola Olasehinde",
@@ -14,15 +14,14 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/bizzyvinci/py-exchangeratesapi",
-    packages=setuptools.find_packages(),
+    packages=['py_exchangeratesapi'],
     install_requires=[
         'requests',
     ],
     classifiers=[
-        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=2.7',
+    python_requires='>=3',
 )

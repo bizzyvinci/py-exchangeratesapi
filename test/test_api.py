@@ -1,7 +1,7 @@
 import datetime
 import os
 import pytest
-from exchangeratesapi import Api, ExchangeRatesApiException
+from py_exchangeratesapi import Api, ExchangeRatesApiException
 
 
 access_key = os.environ['EXCHANGERATESAPI_KEY']
