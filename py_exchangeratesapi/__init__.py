@@ -1,1 +1,1 @@
-from exchangeratesapi.api import Api, ExchangeRatesApiException
+from py_exchangeratesapi.api import Api, ExchangeRatesApiException
