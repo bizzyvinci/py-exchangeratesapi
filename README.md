@@ -35,7 +35,7 @@ api = Api()
 ```
 
 ## Methods
-Api reference can be found [here](https://github.com/bizzyvinci/py-exchangeratesapi/blob/docs/docs/api_reference.md)
+Api reference can be found [here](https://github.com/bizzyvinci/py-exchangeratesapi/blob/main/docs/api_reference.md)
 | Methods 						| Task				|
 | ----------------------------- | ----------------- |
 | api.get_rate()				| Get latest or historical rate against a target |
