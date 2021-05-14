@@ -157,25 +157,26 @@ class Api(object):
     def get_rates(self, base=None, target_list=[],
                   start_date=None, end_date=None):
         """Method to get exchange rates for a given currency
-        for a given date.
+        against multiple targets.
 
         Args:
-            param1 (obj): self
-            param2 (str): 3-letter currency code
-            param3 (str): 3-letter currency code
-            param4 (str): date string in format YYYY-mm-dd
+            base (str): 3-letter currency code
+            target_list (str): list of 3-letter currency codes
+            start_date (str): date string in format YYYY-MM-DD
+            end_date (str): date string in format YYYY-MM-DD
 
         Returns:
             (float): currency rate
 
         Examples:
-            ```
-            >>> api.get_rates()
-            ...
-            >>> api.get_rates('USD', ['EUR','CAD','GBP'],
-                              start_date="2019-09-12")
-            ...
-            ```
+        ```
+        >>> api.get_rates()
+        ...
+        
+        >>> api.get_rates('USD', ['EUR','CAD','GBP'],
+                          start_date="2019-09-12")
+        ...
+        ```
         """
         self._check_date_format(start_date)
         self._check_date_format(end_date)
@@ -185,24 +186,25 @@ class Api(object):
     def get_rate(self, base='EUR', target='USD',
                  start_date=None, end_date=None):
         """Method to get exchange rate for a given currency
-        for a given date.
+        against a target.
 
         Args:
-            param1 (obj): self
-            param2 (str): date string in format dd.mm.YYYY
-            param3 (str): 3-letter currency code
-            param4 (str): 3-letter currency code
+            base (str): 3-letter currency code, default 'EUR'
+            target (str): 3-letter currency code
+            start_date (str): date string in format YYYY-MM-DD
+            end_date (str): date string in format YYYY-MM-DD
 
         Returns:
             (float): currency rate
 
         Examples:
-            ```
-            >>> api.get_rate()
-            394.55
-            >>> api.get_rate('USD', 'EUR', start_date="2019-09-12")
-            0.897
-            ```
+        ```
+        >>> api.get_rate()
+        394.55
+
+        >>> api.get_rate('USD', 'EUR', start_date="2019-09-12")
+        0.897
+        ```
         """
         res = self.get_rates(base=base, target_list=[target],
                              start_date=start_date, end_date=end_date)
@@ -215,21 +217,22 @@ class Api(object):
         to another on a given date or latest.
 
         Args:
-            param1 (obj): self
-            param2 (int/float): amount
-            param3 (str): base
-            param4 (str): target
-            param5 (str): date
+            amount (int/float): amount to convert
+            base (str): 3-letter currency code
+            target (str): 3-letter currency code
+            date (str): date string in format YYYY-MM-DD
 
         Returns:
             (float): converted amount
 
         Examples:
-            ```
-            >>> api.convert(10, 'EUR', 'USD')
-            11.9655
-            >>> api.convert(25, 'USD', 'EUR', '2014-03-26')
-            18.13265
+        ```
+        >>> api.convert(10, 'EUR', 'USD')
+        11.9655
+
+        >>> api.convert(25, 'USD', 'EUR', '2014-03-26')
+        18.13265
+        ```
         """
         if self.API_TIER > 0:
             endpoint = self.endpoints['convert']
@@ -252,11 +255,11 @@ class Api(object):
         optionally between two specified dates.
 
         Args:
-            param1 (obj): self
-            param2 (str): base
-            param3 (str/list): target
-            param4 (str): start_date
-            param5 (str): end_date
+            base (str): 3-letter currency code
+            target (str/list): 3-letter currency code or list of 
+                3-letter currency code
+            start_date (str): date string in format YYYY-MM-DD
+            end_date (str): date string in format YYYY-MM-DD
 
         Returns:
             (dict): fluctuation
@@ -286,8 +289,7 @@ class Api(object):
         """Method to check if currency is supported.
         
         Args:
-            param1 (obj): self
-            param2 (str): currency
+            currency (str): 3-letter currency code
 
         Returns:
             (bool): if currency is supported
